@@ -32,21 +32,32 @@ public class JwtAuthServiceApp implements CommandLineRunner {
 
   @Override
   public void run(String... params) {
-    AppUser admin = new AppUser();
-    admin.setUsername("admin");
-    admin.setPassword("admin");
-    admin.setEmail("admin@email.com");
-    admin.setAppUserRoles(new ArrayList<>(List.of(AppUserRole.ROLE_ADMIN)));
+    try {
+      
+      AppUser admin = new AppUser();
+      admin.setUsername("admin");
+      admin.setPassword("admin");
+      admin.setEmail("admin@email.com");
+      admin.setAppUserRoles(new ArrayList<>(List.of(AppUserRole.ROLE_ADMIN)));
+      
+      userService.signup(admin);
+    } catch (Exception e) {
+      System.out.println("[Error] Failed to create admin");
+      e.printStackTrace();
+    }
 
-    userService.signup(admin);
+    try {
+      AppUser client = new AppUser();
+      client.setUsername("client");
+      client.setPassword("client");
+      client.setEmail("client@email.com");
+      client.setAppUserRoles(new ArrayList<>(List.of(AppUserRole.ROLE_CLIENT)));
 
-    AppUser client = new AppUser();
-    client.setUsername("client");
-    client.setPassword("client");
-    client.setEmail("client@email.com");
-    client.setAppUserRoles(new ArrayList<>(List.of(AppUserRole.ROLE_CLIENT)));
-
-    userService.signup(client);
+      userService.signup(client);
+    } catch (Exception e) {
+      System.out.println("[Error] Failed to create client");
+      e.printStackTrace();
+    }
   }
 
 }
